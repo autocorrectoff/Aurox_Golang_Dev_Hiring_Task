@@ -1,2 +1,2 @@
 # SimpleSitemapGenerator
-Sitemap (https://www.sitemaps.org) generator command line tool - WIP
+Sitemap (https://www.sitemaps.org) generator command line tool - **WIP**
