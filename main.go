@@ -3,7 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
+	"github.com/autocorrectoff/SimpleSitemapGenerator/engine"
+	"github.com/autocorrectoff/SimpleSitemapGenerator/utils"
 	"time"
 )
 
@@ -14,12 +15,21 @@ func main() {
 	maxDepth := flag.Int("max-depth", 1, "Max depth of url navigation recursion")
 	flag.Parse()
 
+	userInput := engine.UserInput{
+		Url:        *url,
+		Parallel:   *parallel,
+		OutputFile: *outputFile,
+		MaxDepth:   *maxDepth,
+	}
+
 	start := time.Now()
 
-	log.Println(*url)
-	log.Println(*parallel)
-	log.Println(*outputFile)
-	log.Println(*maxDepth)
+	siteMap := engine.New(userInput)
+
+	err := siteMap.Start()
+	utils.HandleError(err)
+
+	siteMap.Export()
 
 	end := time.Now()
 	duration := end.Sub(start)
