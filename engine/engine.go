@@ -4,8 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	// "log"
-	"github.com/autocorrectoff/SimpleSitemapGenerator/utils"
 	"net/http"
 	"os"
 	"reflect"
@@ -13,6 +11,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/autocorrectoff/SimpleSitemapGenerator/utils"
 )
 
 type SiteMap struct {
@@ -169,7 +169,11 @@ func (sm *SiteMap) prependBaseUrlIfMissing(links []string) []string {
 
 // Some links are external web pages
 func (sm *SiteMap) fetchPageGuard(url string) *HTTPResponse {
-	if strings.HasPrefix(url, sm.BaseUrl) {
+	urlCopy := url
+	if !strings.HasSuffix(url, "/") {
+		urlCopy = url + "/"
+	}
+	if strings.HasPrefix(urlCopy, sm.BaseUrl) {
 		resp := fetchPage(url)
 		if resp != nil && resp.err != nil {
 			return nil
